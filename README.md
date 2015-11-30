@@ -6,3 +6,5 @@
 **License:** Apache License Version 2.0
 
 Scrape Dat Rooms uses JxBrowser [http://www.teamdev.com/jxbrowser](http://www.teamdev.com/jxbrowser), which is a proprietary software. The use of JxBrowser is governed by JxBrowser Product Licence Agreement  [http://www.teamdev.com/jxbrowser-licence-agreement](http://www.teamdev.com/jxbrowser-licence-agreement). If you would like to use JxBrowser in your development, please contact TeamDev.
+
+[![Join the chat at https://gitter.im/Hronom/scrape-dat-rooms](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Hronom/scrape-dat-rooms?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
