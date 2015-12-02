@@ -70,6 +70,8 @@ public class ScrapeView extends JPanel {
                             parserComboBox.setSelectedIndex(1);
                         } else if (str.contains("redlion.com")) {
                             parserComboBox.setSelectedIndex(2);
+                        }else if (str.contains("ebookers.com")) {
+                            parserComboBox.setSelectedIndex(3);
                         }
                     } catch (BadLocationException exception) {
                         logger.error(exception);
@@ -137,7 +139,7 @@ public class ScrapeView extends JPanel {
         }
 
         {
-            String[] values = new String[] {"Motel6", "RedRoof", "RedLion"};
+            String[] values = new String[] {"Motel6", "RedRoof", "RedLion", "ebookers"};
             parserComboBox = new JComboBox<>(values);
             parserComboBox.setSelectedIndex(0);
 

@@ -3,6 +3,7 @@ package com.github.hronom.scrape.dat.rooms.view.controllers;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.github.hronom.scrape.dat.rooms.core.html.parsers.EbookersHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6HtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedLionHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedRoofHtmlParser;
@@ -50,6 +51,10 @@ public class ScrapeButtonController {
     private final Path redLionResultsDir = resultsPath.resolve("redlion");
     private final Path redLionResultsPhotosDir = redLionResultsDir.resolve("photos");
     private final RedLionHtmlParser redLionHtmlParser = new RedLionHtmlParser();
+
+    private final Path ebookersResultsDir = resultsPath.resolve("ebookers");
+    private final Path ebookersResultsPhotosDir = ebookersResultsDir.resolve("photos");
+    private final EbookersHtmlParser ebookersHtmlParser = new EbookersHtmlParser();
 
     public ScrapeButtonController(ScrapeView scrapeViewArg) {
         scrapeView = scrapeViewArg;
@@ -131,6 +136,16 @@ public class ScrapeButtonController {
                                     roomInfos = redLionHtmlParser.parse(html, downloader);
                                     if (roomInfos != null) {
                                         save(roomInfos, redLionResultsDir);
+                                    }
+                                    break;
+                                }
+                                case "ebookers": {
+                                    prepareFolder(ebookersResultsDir, ebookersResultsPhotosDir);
+                                    RoomPhotoDownloader downloader =
+                                        createRoomPhotoDownloader(ebookersResultsPhotosDir);
+                                    roomInfos = ebookersHtmlParser.parse(html, downloader);
+                                    if (roomInfos != null) {
+                                        save(roomInfos, ebookersResultsDir);
                                     }
                                     break;
                                 }
