@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class EbookersHtmlParser implements HtmlParser {
@@ -20,80 +19,39 @@ public class EbookersHtmlParser implements HtmlParser {
         ArrayList<RoomInfo> results = new ArrayList<>();
 
         Document doc = Jsoup.parse(html, baseUri);
-        Elements selectedElements = doc.select("div[class^=\"container-card roomRate photo-gallery-images\"]");
+        Elements selectedElements =
+            doc.select("div[class^=\"container-card roomRate photo-gallery-images\"]");
         if (selectedElements.isEmpty()) {
-            logger.error("Not valid HTML for Motel6 website!");
+            logger.error("Not valid HTML for Ebookers website!");
             return null;
         }
 
         for (Element element : selectedElements) {
-            RoomInfo roomInfo = parseRoom(element, downloader);
+            RoomInfo roomInfo = parseRoom(element);
             results.add(roomInfo);
         }
 
         return results;
     }
 
-    private RoomInfo parseRoom(Element element, RoomPhotoDownloader downloader) {
+    private RoomInfo parseRoom(Element element) {
         RoomInfo roomInfo = new RoomInfo();
-        parsePhoto(element, roomInfo, downloader);
         parseRate(element, roomInfo);
-        parseDescription(element, roomInfo);
         parseAmenities(element, roomInfo);
         return roomInfo;
     }
 
-    private void parsePhoto(Element element, RoomInfo roomInfo, RoomPhotoDownloader downloader) {
-        Element photoElement = element.select("a[class=\"ng-scope\"]").first();
-        if (photoElement != null) {
-            String photoUrl = photoElement.absUrl("href");
-            Path savePath = downloader.download(photoUrl);
-            if (savePath != null) {
-                roomInfo.roomPhotoPath = savePath.toString();
-            }
-        }
-    }
-
     private void parseRate(Element element, RoomInfo roomInfo) {
-        StringBuilder sb = new StringBuilder();
-        Element currencyElement = element
-            .select("format-currency[class=\"ng-binding ng-isolate-scope\"]").first();
+        Element currencyElement = element.select("strong").first();
         if (currencyElement != null) {
-            // Main part of value.
-            sb.append(currencyElement.ownText());
-
-            sb.append(".");
-
-            // Additional part of value.
-            Element additionalValuePartElem = currencyElement.select("sup[class=\"ng-binding\"]")
-                .first();
-            if (additionalValuePartElem != null) {
-                sb.append(additionalValuePartElem.ownText());
-            }
-
-            Element rateTypeElem = currencyElement.select("span[class=\"ng-binding\"]").first();
-            if (rateTypeElem != null) {
-                sb.append(rateTypeElem.ownText());
-            }
-        }
-        roomInfo.rate = sb.toString();
-    }
-
-    private void parseDescription(Element element, RoomInfo roomInfo) {
-        Element descriptionElement = element
-            .select("div[class=\"roomList-body descSection-desktop\"]").first();
-
-        if (descriptionElement != null) {
-            Element labelElement = descriptionElement.select("label[class=\"text-col ng-binding\"]")
-                .first();
-            roomInfo.description = labelElement.ownText().trim();
+            roomInfo.rate = currencyElement.ownText().trim();
         }
     }
 
     private void parseAmenities(Element element, RoomInfo roomInfo) {
-        Element amenitiesElement = element.select("span[class=\"roomInfo\"]").first();
-        if (amenitiesElement != null) {
-            roomInfo.amenities = amenitiesElement.text().trim();
+        Element descriptionElement = element.select("ul[class=\"room-description\"]").first();
+        if (descriptionElement != null) {
+            roomInfo.amenities = descriptionElement.text().trim();
         }
     }
 }
