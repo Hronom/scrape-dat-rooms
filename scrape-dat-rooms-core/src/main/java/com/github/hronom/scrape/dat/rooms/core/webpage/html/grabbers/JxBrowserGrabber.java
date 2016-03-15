@@ -9,10 +9,14 @@ import org.apache.logging.log4j.Logger;
 public class JxBrowserGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
 
-    private final Browser browser;
+    private Browser browser;
 
     public JxBrowserGrabber() {
-        browser = new Browser();
+        try {
+            browser = new Browser();
+        } catch (ExceptionInInitializerError exceptionInInitializerError) {
+            logger.error(exceptionInInitializerError);
+        }
     }
 
     @Override
