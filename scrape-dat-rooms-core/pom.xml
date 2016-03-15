@@ -27,32 +27,32 @@
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser-linux32</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser-linux64</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser-mac</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser-win</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>license</artifactId>
-            <version>6.0-beta</version>
+            <version>6.2</version>
         </dependency>
         <!-- commons-lang3 -->
         <dependency>
