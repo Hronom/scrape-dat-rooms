@@ -87,15 +87,23 @@ public class ScrapeButtonController {
                         logger.info("Requesting page...");
 
                         String html = null;
-                        String selectedBrowserEngine = scrapeView.getSelectedBrowserEngine();
+                        ScrapeView.BrowserEngine selectedBrowserEngine = scrapeView.getSelectedBrowserEngine();
                         switch (selectedBrowserEngine) {
-                            case "HtmlUnit":
+                            case HtmlUnit:
+                                String proxyHost = scrapeView.getProxyHost();
+                                String proxyPort = scrapeView.getProxyPort();
+                                if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty()) {
+                                    htmlUnitGrabber
+                                        .setProxyParameters(proxyHost, Integer.valueOf(proxyPort));
+                                } else {
+                                    htmlUnitGrabber.setProxyParameters(null, 0);
+                                }
                                 html = htmlUnitGrabber.grabHtml(scrapeView.getWebsiteUrl());
                                 break;
-                            case "Ui4j":
+                            case Ui4j:
                                 html = ui4jGrabber.grabHtml(scrapeView.getWebsiteUrl());
                                 break;
-                            case "JxBrowser":
+                            case JxBrowser:
                                 html = jxBrowserGrabber.grabHtml(scrapeView.getWebsiteUrl());
                                 break;
                             default:
@@ -107,9 +115,9 @@ public class ScrapeButtonController {
                             scrapeView.setProgressBarTaskText("parsing HTML");
                             logger.info("Parse HTML");
                             ArrayList<RoomInfo> roomInfos;
-                            String selectedParser = scrapeView.getSelectedParser();
+                            ScrapeView.Parser selectedParser = scrapeView.getSelectedParser();
                             switch (selectedParser) {
-                                case "Motel6": {
+                                case Motel6: {
                                     prepareFolder(motel6ResultsDir, motel6ResultsPhotosDir);
                                     RoomPhotoDownloader downloader = createRoomPhotoDownloader(
                                         motel6ResultsPhotosDir);
@@ -119,7 +127,7 @@ public class ScrapeButtonController {
                                     }
                                     break;
                                 }
-                                case "RedRoof": {
+                                case RedRoof: {
                                     prepareFolder(redRoofResultsDir, redRoofResultsPhotosDir);
                                     RoomPhotoDownloader downloader = createRoomPhotoDownloader(
                                         redRoofResultsPhotosDir);
@@ -129,7 +137,7 @@ public class ScrapeButtonController {
                                     }
                                     break;
                                 }
-                                case "RedLion": {
+                                case RedLion: {
                                     prepareFolder(redLionResultsDir, redLionResultsPhotosDir);
                                     RoomPhotoDownloader downloader = createRoomPhotoDownloader(
                                         redLionResultsPhotosDir);
@@ -139,7 +147,7 @@ public class ScrapeButtonController {
                                     }
                                     break;
                                 }
-                                case "ebookers": {
+                                case ebookers: {
                                     prepareFolder(ebookersResultsDir, ebookersResultsPhotosDir);
                                     RoomPhotoDownloader downloader =
                                         createRoomPhotoDownloader(ebookersResultsPhotosDir);

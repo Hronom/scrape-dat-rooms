@@ -11,7 +11,9 @@ import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomPhotoDownloader;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
+import com.github.hronom.scrape.dat.rooms.view.controllers.BrowserEngineSelectionController;
 import com.github.hronom.scrape.dat.rooms.view.controllers.ScrapeButtonController;
+import com.github.hronom.scrape.dat.rooms.view.controllers.WebsiteUrlTypingController;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeMainView;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeView;
 
@@ -35,6 +37,8 @@ public class ScrapeDatRoomsViewApp {
 
         ScrapeView scrapeView = new ScrapeView();
         new ScrapeButtonController(scrapeView);
+        new WebsiteUrlTypingController(scrapeView);
+        new BrowserEngineSelectionController(scrapeView);
         new ScrapeMainView(scrapeView);
 
 //        testMotel6();

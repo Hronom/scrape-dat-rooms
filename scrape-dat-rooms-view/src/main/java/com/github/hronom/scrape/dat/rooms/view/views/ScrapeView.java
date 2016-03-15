@@ -5,11 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 
 public class ScrapeView extends JPanel {
     private static final Logger logger = LogManager.getLogger();
@@ -20,16 +19,35 @@ public class ScrapeView extends JPanel {
     private final JTextField websiteDataUrlTextField;
 
     private final JLabel browserEngineLabel;
-    private final JComboBox<String> browserEngineComboBox;
+    private final JComboBox<BrowserEngine> browserEngineComboBox;
 
     private final JLabel parserLabel;
-    private final JComboBox<String> parserComboBox;
+    private final JComboBox<Parser> parserComboBox;
+
+    private final JLabel proxyHostLabel;
+    private final JTextField proxyHostTextField;
+
+    private final JLabel proxyPortLabel;
+    private final JTextField proxyPortTextField;
 
     private final JButton scrapeButton;
 
     private final JTextArea outputTextArea;
 
     private final JProgressBar progressBar;
+
+    public enum BrowserEngine {
+        HtmlUnit,
+        Ui4j,
+        JxBrowser
+    }
+
+    public enum Parser {
+        Motel6,
+        RedRoof,
+        RedLion,
+        ebookers
+    }
 
     public ScrapeView() {
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -59,33 +77,6 @@ public class ScrapeView extends JPanel {
 
         {
             websiteDataUrlTextField = new JTextField("");
-            websiteDataUrlTextField.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    try {
-                        String str = e.getDocument().getText(0, e.getDocument().getLength());
-                        if (str.contains("motel6.com")) {
-                            parserComboBox.setSelectedIndex(0);
-                        } else if (str.contains("redroof.com")) {
-                            parserComboBox.setSelectedIndex(1);
-                        } else if (str.contains("redlion.com")) {
-                            parserComboBox.setSelectedIndex(2);
-                        }else if (str.contains("ebookers.com")) {
-                            parserComboBox.setSelectedIndex(3);
-                        }
-                    } catch (BadLocationException exception) {
-                        logger.error(exception);
-                    }
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                }
-            });
 
             constraint.weightx = 1;
             constraint.weighty = 0;
@@ -111,8 +102,7 @@ public class ScrapeView extends JPanel {
         }
 
         {
-            String[] values = new String[] {"HtmlUnit", "Ui4j", "JxBrowser"};
-            browserEngineComboBox = new JComboBox<>(values);
+            browserEngineComboBox = new JComboBox<>(BrowserEngine.values());
             browserEngineComboBox.setSelectedIndex(2);
 
             constraint.weightx = 1;
@@ -139,8 +129,7 @@ public class ScrapeView extends JPanel {
         }
 
         {
-            String[] values = new String[] {"Motel6", "RedRoof", "RedLion", "ebookers"};
-            parserComboBox = new JComboBox<>(values);
+            parserComboBox = new JComboBox<>(Parser.values());
             parserComboBox.setSelectedIndex(0);
 
             constraint.weightx = 1;
@@ -154,12 +143,64 @@ public class ScrapeView extends JPanel {
         }
 
         {
+            proxyHostLabel = new JLabel("Proxy host:");
+
+            constraint.weightx = 0;
+            constraint.weighty = 0;
+            constraint.gridx = 0;
+            constraint.gridy = 3;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyHostLabel, constraint);
+        }
+
+        {
+            proxyHostTextField = new JTextField("");
+
+            constraint.weightx = 1;
+            constraint.weighty = 0;
+            constraint.gridx = 1;
+            constraint.gridy = 3;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyHostTextField, constraint);
+        }
+
+        {
+            proxyPortLabel = new JLabel("Proxy port:");
+
+            constraint.weightx = 0;
+            constraint.weighty = 0;
+            constraint.gridx = 0;
+            constraint.gridy = 4;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyPortLabel, constraint);
+        }
+
+        {
+            proxyPortTextField = new JTextField("");
+
+            constraint.weightx = 1;
+            constraint.weighty = 0;
+            constraint.gridx = 1;
+            constraint.gridy = 4;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyPortTextField, constraint);
+        }
+
+        {
             scrapeButton = new JButton("Scrape website");
 
             constraint.weightx = 1;
             constraint.weighty = 0;
             constraint.gridx = 0;
-            constraint.gridy = 3;
+            constraint.gridy = 5;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -180,7 +221,7 @@ public class ScrapeView extends JPanel {
             constraint.weightx = 1;
             constraint.weighty = 1;
             constraint.gridx = 0;
-            constraint.gridy = 4;
+            constraint.gridy = 6;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -197,7 +238,7 @@ public class ScrapeView extends JPanel {
             constraint.weightx = 1;
             constraint.weighty = 0;
             constraint.gridx = 0;
-            constraint.gridy = 5;
+            constraint.gridy = 7;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -205,12 +246,44 @@ public class ScrapeView extends JPanel {
         }
     }
 
-    public String getSelectedBrowserEngine() {
-        return (String) browserEngineComboBox.getSelectedItem();
+    public String getWebsiteUrl() {
+        return websiteDataUrlTextField.getText();
     }
 
-    public String getSelectedParser() {
-        return (String) parserComboBox.getSelectedItem();
+    public void addWebsiteUrlDocumentListener(DocumentListener listener) {
+        websiteDataUrlTextField.getDocument().addDocumentListener(listener);
+    }
+
+    public BrowserEngine getSelectedBrowserEngine() {
+        return (BrowserEngine) browserEngineComboBox.getSelectedItem();
+    }
+
+    public void addBrowserEngineItemListener(ItemListener listener) {
+        browserEngineComboBox.addItemListener(listener);
+    }
+
+    public void selectParser(Parser parser) {
+        parserComboBox.setSelectedItem(parser);
+    }
+
+    public Parser getSelectedParser() {
+        return (Parser) parserComboBox.getSelectedItem();
+    }
+
+    public String getProxyHost() {
+        return proxyHostTextField.getText();
+    }
+
+    public void setProxyHostTextFieldEnabled(boolean enabled) {
+        proxyHostTextField.setEnabled(enabled);
+    }
+
+    public String getProxyPort() {
+        return proxyPortTextField.getText();
+    }
+
+    public void setProxyPortTextFieldEnabled(boolean enabled) {
+        proxyPortTextField.setEnabled(enabled);
     }
 
     public void addScrapeButtonActionListener(ActionListener actionListener) {
@@ -223,10 +296,6 @@ public class ScrapeView extends JPanel {
 
     public void setScrapeButtonEnabled(boolean enabled) {
         scrapeButton.setEnabled(enabled);
-    }
-
-    public String getWebsiteUrl() {
-        return websiteDataUrlTextField.getText();
     }
 
     public void setOutput(String text) {
