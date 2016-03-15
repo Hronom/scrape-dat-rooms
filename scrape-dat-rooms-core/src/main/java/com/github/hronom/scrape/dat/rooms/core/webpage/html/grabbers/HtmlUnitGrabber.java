@@ -2,6 +2,7 @@ package com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers;
 
 import com.gargoylesoftware.htmlunit.AjaxController;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.ProxyConfig;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -39,6 +40,13 @@ public class HtmlUnitGrabber implements Grabber {
     }
 
     @Override
+    public void setProxyParameters(String proxyHost, int proxyPort) {
+        ProxyConfig proxyConfig = webClient.getOptions().getProxyConfig();
+        proxyConfig.setProxyHost(proxyHost);
+        proxyConfig.setProxyPort(proxyPort);
+    }
+
+    @Override
     public String grabHtml(String webpageUrl) {
         try {
             URL url = new URL(webpageUrl);
@@ -49,7 +57,7 @@ public class HtmlUnitGrabber implements Grabber {
             return xml;
         } catch (IOException exception) {
             logger.fatal(exception);
+            return null;
         }
-        return null;
     }
 }

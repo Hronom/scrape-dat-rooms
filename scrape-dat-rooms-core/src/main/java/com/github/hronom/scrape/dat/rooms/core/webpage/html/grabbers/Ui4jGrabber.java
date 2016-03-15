@@ -3,6 +3,7 @@ package com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
+import com.ui4j.api.browser.PageConfiguration;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,11 @@ public class Ui4jGrabber implements Grabber {
 
     public Ui4jGrabber() {
         browserEngine = BrowserFactory.getWebKit();
+    }
+
+    @Override
+    public void setProxyParameters(String proxyHost, int proxyPort) {
+        // TODO
     }
 
     @Override
