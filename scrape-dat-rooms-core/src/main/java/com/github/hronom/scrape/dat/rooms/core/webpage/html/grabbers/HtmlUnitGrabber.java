@@ -8,6 +8,9 @@ import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +19,8 @@ import java.net.URL;
 
 public class HtmlUnitGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
+
+    private final ProxyConfig defaultProxyConfig = new ProxyConfig();
 
     private final WebClient webClient;
 
@@ -40,15 +45,38 @@ public class HtmlUnitGrabber implements Grabber {
     }
 
     @Override
-    public void setProxyParameters(String proxyHost, int proxyPort) {
-        ProxyConfig proxyConfig = webClient.getOptions().getProxyConfig();
-        proxyConfig.setProxyHost(proxyHost);
-        proxyConfig.setProxyPort(proxyPort);
+    public String grabHtml(String webpageUrl) {
+        return grabHtml(webpageUrl, null, 0, null, null);
     }
 
     @Override
-    public String grabHtml(String webpageUrl) {
+    public String grabHtml(String webpageUrl, String proxyHost, int proxyPort) {
+        return grabHtml(webpageUrl, proxyHost, proxyPort, null, null);
+    }
+
+    @Override
+    public String grabHtml(
+        String webpageUrl, String proxyHost, int proxyPort, String proxyUsername, String proxyPassword
+    ) {
         try {
+            // Set proxy.
+            if (proxyHost != null && proxyPort > 0) {
+                ProxyConfig proxyConfig = new ProxyConfig(proxyHost, proxyPort);
+                webClient.getOptions().setProxyConfig(proxyConfig);
+            } else {
+                webClient.getOptions().setProxyConfig(defaultProxyConfig);
+            }
+            CredentialsProvider credentialsProvider = webClient.getCredentialsProvider();
+            if (proxyUsername != null && proxyPassword != null) {
+                UsernamePasswordCredentials credentials =
+                    new UsernamePasswordCredentials(proxyUsername, proxyPassword);
+                AuthScope authScope = new AuthScope(proxyHost, proxyPort);
+                credentialsProvider.setCredentials(authScope, credentials);
+            } else {
+                credentialsProvider.clear();
+            }
+
+            // Get page.
             URL url = new URL(webpageUrl);
             HtmlPage page = webClient.getPage(url);
             String xml = page.asXml();

@@ -1,10 +1,6 @@
 package com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers;
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.BrowserContextParams;
-import com.teamdev.jxbrowser.chromium.DirectProxyConfig;
-import com.teamdev.jxbrowser.chromium.ProxyConfig;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -24,12 +20,19 @@ public class JxBrowserGrabber implements Grabber {
     }
 
     @Override
-    public void setProxyParameters(String proxyHost, int proxyPort) {
-        // TODO
+    public String grabHtml(String webpageUrl) {
+        return grabHtml(webpageUrl, null, 0, null, null);
     }
 
     @Override
-    public String grabHtml(String webpageUrl) {
+    public String grabHtml(String webpageUrl, String proxyHost, int proxyPort) {
+        return grabHtml(webpageUrl, proxyHost, proxyPort, null, null);
+    }
+
+    @Override
+    public String grabHtml(
+        String webpageUrl, String proxyHost, int proxyPort, String proxyUsername, String proxyPassword
+    ) {
         browser.loadURL(webpageUrl);
         // Wait for loading.
         while (browser.isLoading()) {
