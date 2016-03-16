@@ -233,8 +233,8 @@ public class ScrapeButtonController {
         try (BufferedWriter bw = Files.newBufferedWriter(resultsPath.resolve("results.csv"))) {
             mapper.writer(schema).writeValues(bw).writeAll(roomInfos);
             scrapeView.setOutput(mapper.writer(schema).writeValueAsString(roomInfos));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            logger.error("Fail!", exception);
         }
     }
 
