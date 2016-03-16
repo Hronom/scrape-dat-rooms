@@ -30,6 +30,12 @@ public class ScrapeView extends JPanel {
     private final JLabel proxyPortLabel;
     private final JTextField proxyPortTextField;
 
+    private final JLabel proxyUsernameLabel;
+    private final JTextField proxyUsernameTextField;
+
+    private final JLabel proxyPasswordLabel;
+    private final JTextField proxyPasswordTextField;
+
     private final JButton scrapeButton;
 
     private final JTextArea outputTextArea;
@@ -195,12 +201,64 @@ public class ScrapeView extends JPanel {
         }
 
         {
+            proxyUsernameLabel = new JLabel("Proxy username:");
+
+            constraint.weightx = 0;
+            constraint.weighty = 0;
+            constraint.gridx = 0;
+            constraint.gridy = 5;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyUsernameLabel, constraint);
+        }
+
+        {
+            proxyUsernameTextField = new JTextField("");
+
+            constraint.weightx = 1;
+            constraint.weighty = 0;
+            constraint.gridx = 1;
+            constraint.gridy = 5;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyUsernameTextField, constraint);
+        }
+
+        {
+            proxyPasswordLabel = new JLabel("Proxy password:");
+
+            constraint.weightx = 0;
+            constraint.weighty = 0;
+            constraint.gridx = 0;
+            constraint.gridy = 6;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyPasswordLabel, constraint);
+        }
+
+        {
+            proxyPasswordTextField = new JTextField("");
+
+            constraint.weightx = 1;
+            constraint.weighty = 0;
+            constraint.gridx = 1;
+            constraint.gridy = 6;
+            constraint.gridwidth = 1;
+            constraint.gridheight = 1;
+            constraint.fill = GridBagConstraints.BOTH;
+            this.add(proxyPasswordTextField, constraint);
+        }
+
+        {
             scrapeButton = new JButton("Scrape website");
 
             constraint.weightx = 1;
             constraint.weighty = 0;
             constraint.gridx = 0;
-            constraint.gridy = 5;
+            constraint.gridy = 7;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -221,7 +279,7 @@ public class ScrapeView extends JPanel {
             constraint.weightx = 1;
             constraint.weighty = 1;
             constraint.gridx = 0;
-            constraint.gridy = 6;
+            constraint.gridy = 8;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -238,7 +296,7 @@ public class ScrapeView extends JPanel {
             constraint.weightx = 1;
             constraint.weighty = 0;
             constraint.gridx = 0;
-            constraint.gridy = 7;
+            constraint.gridy = 9;
             constraint.gridwidth = 2;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
@@ -268,6 +326,22 @@ public class ScrapeView extends JPanel {
 
     public Parser getSelectedParser() {
         return (Parser) parserComboBox.getSelectedItem();
+    }
+
+    public String getProxyUsername() {
+        return proxyUsernameTextField.getText();
+    }
+
+    public void setProxyUsernameTextFieldEnabled(boolean enabled) {
+        proxyUsernameTextField.setEnabled(enabled);
+    }
+
+    public String getProxyPassword() {
+        return proxyPasswordTextField.getText();
+    }
+
+    public void setProxyPasswordTextFieldEnabled(boolean enabled) {
+        proxyPasswordTextField.setEnabled(enabled);
     }
 
     public String getProxyHost() {

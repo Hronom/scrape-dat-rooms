@@ -11,6 +11,7 @@ import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomInfo;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomPhotoDownloader;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
+import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Grabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.HtmlUnitGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Ui4jGrabber;
@@ -87,24 +88,42 @@ public class ScrapeButtonController {
                         logger.info("Requesting page...");
 
                         String html = null;
-                        ScrapeView.BrowserEngine selectedBrowserEngine = scrapeView.getSelectedBrowserEngine();
+                        ScrapeView.BrowserEngine selectedBrowserEngine = scrapeView
+                            .getSelectedBrowserEngine();
+
+                        String webpageUrl = scrapeView.getWebsiteUrl();
+                        String proxyHost = scrapeView.getProxyHost();
+                        String proxyPort = scrapeView.getProxyPort();
+                        String proxyUsername = scrapeView.getProxyUsername();
+                        String proxyPassword = scrapeView.getProxyPassword();
+
                         switch (selectedBrowserEngine) {
                             case HtmlUnit:
-                                String proxyHost = scrapeView.getProxyHost();
-                                String proxyPort = scrapeView.getProxyPort();
-                                if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty()) {
-                                    htmlUnitGrabber
-                                        .setProxyParameters(proxyHost, Integer.valueOf(proxyPort));
-                                } else {
-                                    htmlUnitGrabber.setProxyParameters(null, 0);
-                                }
-                                html = htmlUnitGrabber.grabHtml(scrapeView.getWebsiteUrl());
+                                html = getHtml(htmlUnitGrabber,
+                                    webpageUrl,
+                                    proxyHost,
+                                    proxyPort,
+                                    proxyUsername,
+                                    proxyPassword
+                                );
                                 break;
                             case Ui4j:
-                                html = ui4jGrabber.grabHtml(scrapeView.getWebsiteUrl());
+                                html = getHtml(ui4jGrabber,
+                                    webpageUrl,
+                                    proxyHost,
+                                    proxyPort,
+                                    proxyUsername,
+                                    proxyPassword
+                                );
                                 break;
                             case JxBrowser:
-                                html = jxBrowserGrabber.grabHtml(scrapeView.getWebsiteUrl());
+                                html = getHtml(jxBrowserGrabber,
+                                    webpageUrl,
+                                    proxyHost,
+                                    proxyPort,
+                                    proxyUsername,
+                                    proxyPassword
+                                );
                                 break;
                             default:
                                 logger.error("Unknown browser engine: " + selectedBrowserEngine);
@@ -149,8 +168,8 @@ public class ScrapeButtonController {
                                 }
                                 case ebookers: {
                                     prepareFolder(ebookersResultsDir, ebookersResultsPhotosDir);
-                                    RoomPhotoDownloader downloader =
-                                        createRoomPhotoDownloader(ebookersResultsPhotosDir);
+                                    RoomPhotoDownloader downloader = createRoomPhotoDownloader(
+                                        ebookersResultsPhotosDir);
                                     roomInfos = ebookersHtmlParser.parse(html, downloader);
                                     if (roomInfos != null) {
                                         save(roomInfos, ebookersResultsDir);
@@ -163,8 +182,7 @@ public class ScrapeButtonController {
                                     break;
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             logger.error("No HTML");
                         }
 
@@ -182,7 +200,7 @@ public class ScrapeButtonController {
         };
     }
 
-    private void prepareFolder(Path resultsPath, Path resultsPhotosDir){
+    private void prepareFolder(Path resultsPath, Path resultsPhotosDir) {
         try {
             PathsUtils.deletePathIfExists(resultsPath);
             PathsUtils.createDirectoryIfNotExists(resultsPath);
@@ -217,6 +235,30 @@ public class ScrapeButtonController {
             scrapeView.setOutput(mapper.writer(schema).writeValueAsString(roomInfos));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getHtml(
+        Grabber grabber,
+        String webpageUrl,
+        String proxyHost,
+        String proxyPort,
+        String proxyUsername,
+        String proxyPassword
+    ) {
+        if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty() &&
+            !proxyUsername.trim().isEmpty() &&
+            !proxyPassword.trim().isEmpty()) {
+            return grabber.grabHtml(webpageUrl,
+                proxyHost,
+                Integer.valueOf(proxyPort),
+                proxyUsername,
+                proxyPassword
+            );
+        } else if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty()) {
+            return grabber.grabHtml(webpageUrl, proxyHost, Integer.valueOf(proxyPort));
+        } else {
+            return grabber.grabHtml(webpageUrl);
         }
     }
 }

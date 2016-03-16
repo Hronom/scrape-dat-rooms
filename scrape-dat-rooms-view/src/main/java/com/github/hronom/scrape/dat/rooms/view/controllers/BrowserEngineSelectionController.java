@@ -10,10 +10,15 @@ public class BrowserEngineSelectionController {
 
     public BrowserEngineSelectionController(ScrapeView scrapeViewArg) {
         scrapeView = scrapeViewArg;
-        if (scrapeView.getSelectedBrowserEngine().equals(ScrapeView.BrowserEngine.HtmlUnit)) {
+        if (scrapeView.getSelectedBrowserEngine().equals(ScrapeView.BrowserEngine.HtmlUnit) ||
+            scrapeView.getSelectedBrowserEngine().equals(ScrapeView.BrowserEngine.Ui4j)) {
+            scrapeView.setProxyUsernameTextFieldEnabled(true);
+            scrapeView.setProxyPasswordTextFieldEnabled(true);
             scrapeView.setProxyHostTextFieldEnabled(true);
             scrapeView.setProxyPortTextFieldEnabled(true);
         } else {
+            scrapeView.setProxyUsernameTextFieldEnabled(false);
+            scrapeView.setProxyPasswordTextFieldEnabled(false);
             scrapeView.setProxyHostTextFieldEnabled(false);
             scrapeView.setProxyPortTextFieldEnabled(false);
         }
@@ -21,10 +26,16 @@ public class BrowserEngineSelectionController {
         scrapeView.addBrowserEngineItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals(ScrapeView.BrowserEngine.HtmlUnit)) {
+                if (e.getStateChange() == ItemEvent.SELECTED &&
+                    e.getItem().equals(ScrapeView.BrowserEngine.HtmlUnit) ||
+                    scrapeView.getSelectedBrowserEngine().equals(ScrapeView.BrowserEngine.Ui4j)) {
+                    scrapeView.setProxyUsernameTextFieldEnabled(true);
+                    scrapeView.setProxyPasswordTextFieldEnabled(true);
                     scrapeView.setProxyHostTextFieldEnabled(true);
                     scrapeView.setProxyPortTextFieldEnabled(true);
                 } else {
+                    scrapeView.setProxyUsernameTextFieldEnabled(false);
+                    scrapeView.setProxyPasswordTextFieldEnabled(false);
                     scrapeView.setProxyHostTextFieldEnabled(false);
                     scrapeView.setProxyPortTextFieldEnabled(false);
                 }
