@@ -20,12 +20,17 @@ import java.net.URL;
 public class HtmlUnitGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
 
+    private final String userAgent =
+        "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+
     private final ProxyConfig defaultProxyConfig = new ProxyConfig();
 
     private final WebClient webClient;
 
     public HtmlUnitGrabber() {
-        webClient = new WebClient(BrowserVersion.FIREFOX_38);
+        BrowserVersion browserVersion = BrowserVersion.FIREFOX_38;
+        //browserVersion.setUserAgent(userAgent);
+        webClient = new WebClient(browserVersion);
         webClient.getOptions().setCssEnabled(true);
         webClient.getOptions().setJavaScriptEnabled(true);
         webClient.getOptions().setPopupBlockerEnabled(false);
