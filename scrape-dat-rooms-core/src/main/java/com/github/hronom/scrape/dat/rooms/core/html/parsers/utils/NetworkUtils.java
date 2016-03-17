@@ -12,17 +12,7 @@ public final class NetworkUtils {
     }
 
     public static Path downloadImage(String src, Path saveFolder) throws IOException {
-        // Extract the name of the image from the src attribute.
-        int indexName = src.lastIndexOf("/");
-
-        if (indexName == src.length()) {
-            src = src.substring(1, indexName + 1);
-        }
-
-        indexName = src.lastIndexOf("/") + 1;
-        String name = src.substring(indexName, src.length());
-
-        Path saveFilePath = saveFolder.resolve(name);
+        Path saveFilePath = srcImageToSavePath(src, saveFolder);
 
         // Open a URL Stream.
         URL url = new URL(src);
@@ -34,5 +24,19 @@ public final class NetworkUtils {
         }
 
         return saveFilePath;
+    }
+
+    public static Path srcImageToSavePath(String src, Path saveFolder) {
+        // Extract the name of the image from the src attribute.
+        int indexName = src.lastIndexOf("/");
+
+        if (indexName == src.length()) {
+            src = src.substring(1, indexName + 1);
+        }
+
+        indexName = src.lastIndexOf("/") + 1;
+        String name = src.substring(indexName, src.length());
+
+        return saveFolder.resolve(name);
     }
 }

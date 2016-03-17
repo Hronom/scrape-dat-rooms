@@ -1,5 +1,7 @@
 package com.github.hronom.scrape.dat.rooms.core.html.parsers;
 
+import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,10 +14,10 @@ import java.util.Scanner;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertNull;
 
 public class Motel6HtmlParserTest {
     private Motel6HtmlParser parser;
+
     @Before
     public void setUp() throws Exception {
         parser = new Motel6HtmlParser();
@@ -23,16 +25,14 @@ public class Motel6HtmlParserTest {
 
     @Test
     public void testParse() throws Exception {
-        String inputHtml = new Scanner(
-            this.getClass().getResourceAsStream("Motel6_1.html"),
-            StandardCharsets.UTF_8.toString())
-            .useDelimiter("\\Z")
-            .next();
+        String inputHtml = new Scanner(this.getClass().getResourceAsStream("Motel6_1.html"),
+            StandardCharsets.UTF_8.toString()
+        ).useDelimiter("\\Z").next();
 
         ArrayList<RoomInfo> roomInfos = parser.parse(inputHtml, new RoomPhotoDownloader() {
             @Override
             public Path download(String url) {
-                return Paths.get(url);
+                return NetworkUtils.srcImageToSavePath(url, Paths.get(""));
             }
         });
 
@@ -42,20 +42,20 @@ public class Motel6HtmlParserTest {
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/www.motel6.com/content/dam/g6/hotel-assets/room-images/m6_0000_single1.jpg");
-            assertEquals(roomInfo.rate, "58.49$");
-            assertEquals(roomInfo.description, "Non-Smoking");
-            assertEquals(roomInfo.amenities, "1 King Bed");
+            assertEquals("m6_0000_single1.jpg", roomInfo.roomPhotoPath);
+            assertEquals("58.49$", roomInfo.rate);
+            assertEquals("Non-Smoking", roomInfo.description);
+            assertEquals("1 King Bed", roomInfo.amenities);
         }
 
         // 2.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/www.motel6.com/content/dam/g6/hotel-assets/room-images/m6_0000_double2.jpg");
-            assertEquals(roomInfo.rate, "62.99$");
-            assertEquals(roomInfo.description, "Non-Smoking");
-            assertEquals(roomInfo.amenities, "2 Queen Beds");
+            assertEquals("m6_0000_double2.jpg", roomInfo.roomPhotoPath);
+            assertEquals("62.99$", roomInfo.rate);
+            assertEquals("Non-Smoking", roomInfo.description);
+            assertEquals("2 Queen Beds", roomInfo.amenities);
         }
     }
 }

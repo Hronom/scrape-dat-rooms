@@ -1,5 +1,7 @@
 package com.github.hronom.scrape.dat.rooms.core.html.parsers;
 
+import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,15 +26,14 @@ public class RedLionHtmlParserTest {
 
     @Test
     public void testParse() throws Exception {
-        String inputHtml = new Scanner(
-            this.getClass().getResourceAsStream("RedLion_1.html"),
+        String inputHtml = new Scanner(this.getClass().getResourceAsStream("RedLion_1.html"),
             StandardCharsets.UTF_8.toString()
         ).useDelimiter("\\Z").next();
 
         ArrayList<RoomInfo> roomInfos = parser.parse(inputHtml, new RoomPhotoDownloader() {
             @Override
             public Path download(String url) {
-                return Paths.get(url);
+                return NetworkUtils.srcImageToSavePath(url, Paths.get(""));
             }
         });
 
@@ -42,60 +43,60 @@ public class RedLionHtmlParserTest {
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/DSCN0265.JPG");
-            assertEquals(roomInfo.rate, "55.00$");
+            assertEquals("DSCN0265.JPG", roomInfo.roomPhotoPath);
+            assertEquals("55.00$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "Two Double Beds");
+            assertEquals("Two Double Beds", roomInfo.amenities);
         }
 
         // 2.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/DSCN0262.JPG");
-            assertEquals(roomInfo.rate, "55.00$");
+            assertEquals("DSCN0262.JPG", roomInfo.roomPhotoPath);
+            assertEquals("55.00$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "One King Bed");
+            assertEquals("One King Bed", roomInfo.amenities);
         }
 
         // 3.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/DSCN0274.JPG");
-            assertEquals(roomInfo.rate, "98.73$");
+            assertEquals("DSCN0274.JPG", roomInfo.roomPhotoPath);
+            assertEquals("98.73$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "King Bed Whirlpool Suite");
+            assertEquals("King Bed Whirlpool Suite", roomInfo.amenities);
         }
 
         // 4.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/22_A1K.jpg");
-            assertEquals(roomInfo.rate, "55.00$");
+            assertEquals("22_A1K.jpg", roomInfo.roomPhotoPath);
+            assertEquals("55.00$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "Accessible King Bed with Roll In Shower");
+            assertEquals("Accessible King Bed with Roll In Shower", roomInfo.amenities);
         }
 
         // 5.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/22_N1K.jpg");
-            assertEquals(roomInfo.rate, "55.00$");
+            assertEquals("22_N1K.jpg", roomInfo.roomPhotoPath);
+            assertEquals("55.00$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "Accessible King Bed");
+            assertEquals("Accessible King Bed", roomInfo.amenities);
         }
 
         // 6.
         assertTrue(iter.hasNext());
         {
             RoomInfo roomInfo = iter.next();
-            assertEquals(roomInfo.roomPhotoPath, "https:/reservations.redlion.com/CrsMedia/P2072/rm/DSCN0271.JPG");
-            assertEquals(roomInfo.rate, "98.73$");
+            assertEquals("DSCN0271.JPG", roomInfo.roomPhotoPath);
+            assertEquals("98.73$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "King Bed Family Suite");
+            assertEquals("King Bed Family Suite", roomInfo.amenities);
         }
 
         // 7.
@@ -103,9 +104,9 @@ public class RedLionHtmlParserTest {
         {
             RoomInfo roomInfo = iter.next();
             assertNull(roomInfo.roomPhotoPath);
-            assertEquals(roomInfo.rate, "85.23$");
+            assertEquals("85.23$", roomInfo.rate);
             assertNull(roomInfo.description);
-            assertEquals(roomInfo.amenities, "Executive Suite");
+            assertEquals("Executive Suite", roomInfo.amenities);
         }
     }
 }
