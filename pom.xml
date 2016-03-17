@@ -5,7 +5,7 @@
 
     <groupId>com.github.hronom</groupId>
     <artifactId>scrape-dat-rooms</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <modules>
         <module>scrape-dat-rooms-core</module>
         <module>scrape-dat-rooms-view</module>
