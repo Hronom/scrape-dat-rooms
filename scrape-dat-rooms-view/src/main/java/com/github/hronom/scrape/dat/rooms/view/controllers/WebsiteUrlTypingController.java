@@ -29,6 +29,8 @@ public class WebsiteUrlTypingController {
                         scrapeView.selectParser(ScrapeView.Parser.RedLion);
                     } else if (str.contains("ebookers.com")) {
                         scrapeView.selectParser(ScrapeView.Parser.ebookers);
+                    } else if (str.contains("windsurfercrs.com")) {
+                        scrapeView.selectParser(ScrapeView.Parser.windsurfercrs);
                     }
                 } catch (BadLocationException exception) {
                     logger.error(exception);

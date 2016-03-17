@@ -52,7 +52,8 @@ public class ScrapeView extends JPanel {
         Motel6,
         RedRoof,
         RedLion,
-        ebookers
+        ebookers,
+        windsurfercrs
     }
 
     public ScrapeView() {

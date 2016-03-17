@@ -9,6 +9,7 @@ import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedLionHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedRoofHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomInfo;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomPhotoDownloader;
+import com.github.hronom.scrape.dat.rooms.core.html.parsers.WindsurfercrsHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Grabber;
@@ -56,6 +57,10 @@ public class ScrapeButtonController {
     private final Path ebookersResultsDir = resultsPath.resolve("ebookers");
     private final Path ebookersResultsPhotosDir = ebookersResultsDir.resolve("photos");
     private final EbookersHtmlParser ebookersHtmlParser = new EbookersHtmlParser();
+
+    private final Path windsurfercrsResultsDir = resultsPath.resolve("windsurfercrs");
+    private final Path windsurfercrsResultsPhotosDir = windsurfercrsResultsDir.resolve("photos");
+    private final WindsurfercrsHtmlParser windsurfercrsHtmlParser = new WindsurfercrsHtmlParser();
 
     public ScrapeButtonController(ScrapeView scrapeViewArg) {
         scrapeView = scrapeViewArg;
@@ -173,6 +178,19 @@ public class ScrapeButtonController {
                                     roomInfos = ebookersHtmlParser.parse(html, downloader);
                                     if (roomInfos != null) {
                                         save(roomInfos, ebookersResultsDir);
+                                    }
+                                    break;
+                                }
+                                case windsurfercrs: {
+                                    prepareFolder(
+                                        windsurfercrsResultsDir,
+                                        windsurfercrsResultsPhotosDir
+                                    );
+                                    RoomPhotoDownloader downloader =
+                                        createRoomPhotoDownloader(windsurfercrsResultsPhotosDir);
+                                    roomInfos = windsurfercrsHtmlParser.parse(html, downloader);
+                                    if (roomInfos != null) {
+                                        save(roomInfos, windsurfercrsResultsDir);
                                     }
                                     break;
                                 }
