@@ -53,7 +53,7 @@ public class JBrowserDriverGrabber implements Grabber {
         Settings settings =
             Settings
                 .builder()
-                .timezone(Timezone.AMERICA_NEWYORK)
+                .timezone(Timezone.UTC)
                 .blockAds(false)
                 .headless(true)
                 .hostnameVerification(false)
