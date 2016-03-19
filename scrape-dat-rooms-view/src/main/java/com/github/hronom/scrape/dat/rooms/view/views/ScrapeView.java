@@ -46,7 +46,8 @@ public class ScrapeView extends JPanel {
         HtmlUnit,
         Ui4j,
         JxBrowser,
-        Jaunt
+        Jaunt,
+        jBrowserDriver
     }
 
     public enum Parser {
