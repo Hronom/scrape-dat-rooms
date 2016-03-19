@@ -89,7 +89,7 @@ public class HtmlUnitGrabber implements Grabber {
             webClient.close();
             return xml;
         } catch (IOException exception) {
-            logger.fatal(exception);
+            logger.fatal("Fail!", exception);
             return null;
         }
     }

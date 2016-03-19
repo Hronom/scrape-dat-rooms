@@ -14,6 +14,7 @@ import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Grabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.HtmlUnitGrabber;
+import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JauntGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Ui4jGrabber;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeView;
@@ -39,6 +40,7 @@ public class ScrapeButtonController {
     private final HtmlUnitGrabber htmlUnitGrabber = new HtmlUnitGrabber();
     private final Ui4jGrabber ui4jGrabber = new Ui4jGrabber();
     private final JxBrowserGrabber jxBrowserGrabber = new JxBrowserGrabber();
+    private final JauntGrabber jauntGrabber = new JauntGrabber();
 
     private final Path resultsPath = Paths.get("results");
 
@@ -123,6 +125,15 @@ public class ScrapeButtonController {
                                 break;
                             case JxBrowser:
                                 html = getHtml(jxBrowserGrabber,
+                                    webpageUrl,
+                                    proxyHost,
+                                    proxyPort,
+                                    proxyUsername,
+                                    proxyPassword
+                                );
+                                break;
+                            case Jaunt:
+                                html = getHtml(jauntGrabber,
                                     webpageUrl,
                                     proxyHost,
                                     proxyPort,
