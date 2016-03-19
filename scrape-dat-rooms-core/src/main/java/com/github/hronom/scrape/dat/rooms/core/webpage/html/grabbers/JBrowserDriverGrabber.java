@@ -1,6 +1,7 @@
 package com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers;
 
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
+import com.machinepublishers.jbrowserdriver.ProxyConfig;
 import com.machinepublishers.jbrowserdriver.Settings;
 import com.machinepublishers.jbrowserdriver.Timezone;
 
@@ -28,13 +29,42 @@ public class JBrowserDriverGrabber implements Grabber {
         String proxyUsername,
         String proxyPassword
     ) {
+        // Set proxy.
+        ProxyConfig proxyConfig;
+        if (proxyHost != null && proxyPort > 0 && proxyUsername != null && proxyPassword != null) {
+            proxyConfig = new ProxyConfig(
+                ProxyConfig.Type.HTTP,
+                proxyHost,
+                proxyPort,
+                proxyUsername,
+                proxyPassword
+            );
+        } else if(proxyHost != null && proxyPort > 0) {
+            proxyConfig = new ProxyConfig(
+                ProxyConfig.Type.HTTP,
+                proxyHost,
+                proxyPort
+            );
+        } else {
+            proxyConfig = new ProxyConfig();
+        }
+
+        // Construct jBrowserDriver.
         Settings settings =
             Settings
                 .builder()
                 .timezone(Timezone.AMERICA_NEWYORK)
+                .blockAds(false)
+                .headless(true)
+                .hostnameVerification(false)
+                .ignoreDialogs(false)
+                .javascript(true)
+                .proxy(proxyConfig)
                 .build();
+
         JBrowserDriver driver = new JBrowserDriver(settings);
 
+        // Get page.
         // This will block for the page load and any associated AJAX requests.
         driver.get(webpageUrl);
 
