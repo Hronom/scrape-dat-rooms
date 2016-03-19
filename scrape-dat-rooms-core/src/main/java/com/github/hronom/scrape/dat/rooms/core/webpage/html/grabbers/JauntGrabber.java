@@ -9,6 +9,18 @@ import org.apache.logging.log4j.Logger;
 public class JauntGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
 
+    private final UserAgent userAgent;
+
+    public JauntGrabber() {
+        // Create new userAgent (headless browser).
+        userAgent = new UserAgent();
+        userAgent.settings.autoRedirect = true;
+        userAgent.settings.checkSSLCerts = false;
+        userAgent.settings.showHeaders = true;
+        userAgent.settings.showTravel = true;
+        userAgent.settings.showWarnings = true;
+    }
+
     @Override
     public String grabHtml(String webpageUrl) {
         return grabHtml(webpageUrl, null, 0, null, null);
@@ -28,13 +40,6 @@ public class JauntGrabber implements Grabber {
         String proxyPassword
     ) {
         try {
-            // Create new userAgent (headless browser).
-            UserAgent userAgent = new UserAgent();
-            userAgent.settings.autoRedirect = true;
-            userAgent.settings.checkSSLCerts = false;
-            userAgent.settings.showHeaders = true;
-            userAgent.settings.showTravel = true;
-            userAgent.settings.showWarnings = true;
             userAgent.visit(webpageUrl);
             return userAgent.doc.innerHTML();
         } catch (ResponseException exception) {
