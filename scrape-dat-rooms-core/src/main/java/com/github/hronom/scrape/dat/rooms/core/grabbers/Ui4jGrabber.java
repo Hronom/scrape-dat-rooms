@@ -38,7 +38,7 @@ public class Ui4jGrabber implements Grabber {
 
     @Override
     public String grabContent(
-        String webpageUrl, String proxyHost, int proxyPort, final String proxyUsername, final String proxyPassword
+        String url, String proxyHost, int proxyPort, final String proxyUsername, final String proxyPassword
     ) {
         // Set proxy.
         if (proxyHost != null && proxyPort > 0) {
@@ -65,7 +65,7 @@ public class Ui4jGrabber implements Grabber {
             Authenticator.setDefault(defaultAuthenticator);
         }
 
-        Page page = browserEngine.navigate(webpageUrl);
+        Page page = browserEngine.navigate(url);
         String html = page.getDocument().getBody().getInnerHTML();
         html = StringEscapeUtils.unescapeHtml4(html);
         browserEngine.clearCookies();

@@ -31,9 +31,9 @@ public class JxBrowserGrabber implements Grabber {
 
     @Override
     public String grabContent(
-        String webpageUrl, String proxyHost, int proxyPort, String proxyUsername, String proxyPassword
+        String url, String proxyHost, int proxyPort, String proxyUsername, String proxyPassword
     ) {
-        browser.loadURL(webpageUrl);
+        browser.loadURL(url);
         // Wait for loading.
         while (browser.isLoading()) {
             try {

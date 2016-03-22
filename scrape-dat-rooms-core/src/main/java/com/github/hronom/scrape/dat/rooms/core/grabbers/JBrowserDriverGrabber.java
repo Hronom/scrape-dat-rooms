@@ -23,7 +23,7 @@ public class JBrowserDriverGrabber implements Grabber {
 
     @Override
     public String grabContent(
-        String webpageUrl,
+        String url,
         String proxyHost,
         int proxyPort,
         String proxyUsername,
@@ -66,7 +66,7 @@ public class JBrowserDriverGrabber implements Grabber {
 
         // Get page.
         // This will block for the page load and any associated AJAX requests.
-        driver.get(webpageUrl);
+        driver.get(url);
 
         // You can get status code unlike other Selenium drivers.
         // It blocks for AJAX requests and page loads after clicks and keyboard events.

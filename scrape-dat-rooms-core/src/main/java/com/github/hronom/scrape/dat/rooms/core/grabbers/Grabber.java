@@ -6,7 +6,7 @@ public interface Grabber {
     String grabContent(String url, String proxyHost, int proxyPort);
 
     String grabContent(
-        String webpageUrl,
+        String url,
         String proxyHost,
         int proxyPort,
         String proxyUsername,

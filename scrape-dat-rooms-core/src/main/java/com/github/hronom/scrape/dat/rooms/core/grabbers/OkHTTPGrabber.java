@@ -40,7 +40,7 @@ public class OkHTTPGrabber implements Grabber {
 
     @Override
     public String grabContent(
-        String webpageUrl,
+        String url,
         String proxyHost,
         int proxyPort,
         String proxyUsername,
@@ -53,7 +53,7 @@ public class OkHTTPGrabber implements Grabber {
             Request request =
                 new Request
                     .Builder()
-                    .url(webpageUrl)
+                    .url(url)
                     .get()
                     .build();
 

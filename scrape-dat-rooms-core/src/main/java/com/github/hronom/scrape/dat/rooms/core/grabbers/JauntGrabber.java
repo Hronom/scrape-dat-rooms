@@ -33,14 +33,14 @@ public class JauntGrabber implements Grabber {
 
     @Override
     public String grabContent(
-        String webpageUrl,
+        String url,
         String proxyHost,
         int proxyPort,
         String proxyUsername,
         String proxyPassword
     ) {
         try {
-            userAgent.visit(webpageUrl);
+            userAgent.visit(url);
             return userAgent.doc.innerHTML();
         } catch (ResponseException exception) {
             logger.fatal("Fail!", exception);
