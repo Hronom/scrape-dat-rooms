@@ -3,23 +3,22 @@ package com.github.hronom.scrape.dat.rooms.view.controllers;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.EbookersHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6HtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6JsonParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedLionHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedRoofHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomInfo;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomPhotoDownloader;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.WindsurfercrsHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Grabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.HtmlUnitGrabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JBrowserDriverGrabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JauntGrabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.OkHTTPGrabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Ui4jGrabber;
+import com.github.hronom.scrape.dat.rooms.core.parsers.ebookers.EbookersHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.motel6.Motel6HtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.motel6.Motel6JsonParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.redlion.RedLionHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.redroof.RedRoofHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.RoomInfo;
+import com.github.hronom.scrape.dat.rooms.core.parsers.RoomPhotoDownloader;
+import com.github.hronom.scrape.dat.rooms.core.parsers.windsurfercrs.WindsurfercrsHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.utils.NetworkUtils;
+import com.github.hronom.scrape.dat.rooms.core.utils.PathsUtils;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.HtmlUnitGrabber;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.JBrowserDriverGrabber;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.JauntGrabber;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.OkHTTPGrabber;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.JxBrowserGrabber;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.Ui4jGrabber;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeView;
 
 import org.apache.logging.log4j.LogManager;
@@ -101,8 +100,8 @@ public class ScrapeButtonController {
                         logger.info("Requesting page...");
 
                         String html = null;
-                        ScrapeView.BrowserEngine selectedBrowserEngine = scrapeView
-                            .getSelectedBrowserEngine();
+                        ScrapeView.Grabber selectedGrabber = scrapeView
+                            .getSelectedGrabber();
 
                         String webpageUrl = scrapeView.getWebsiteUrl();
                         String proxyHost = scrapeView.getProxyHost();
@@ -110,7 +109,7 @@ public class ScrapeButtonController {
                         String proxyUsername = scrapeView.getProxyUsername();
                         String proxyPassword = scrapeView.getProxyPassword();
 
-                        switch (selectedBrowserEngine) {
+                        switch (selectedGrabber) {
                             case HtmlUnit:
                                 html = getHtml(htmlUnitGrabber,
                                     webpageUrl,
@@ -167,7 +166,7 @@ public class ScrapeButtonController {
                                 );
                                 break;
                             default:
-                                logger.error("Unknown browser engine: " + selectedBrowserEngine);
+                                logger.error("Unknown browser engine: " + selectedGrabber);
                                 break;
                         }
 
@@ -242,7 +241,7 @@ public class ScrapeButtonController {
                                 }
                                 default: {
                                     logger
-                                        .error("Unknown browser engine: " + selectedBrowserEngine);
+                                        .error("Unknown browser engine: " + selectedGrabber);
                                     break;
                                 }
                             }
@@ -303,7 +302,7 @@ public class ScrapeButtonController {
     }
 
     private String getHtml(
-        Grabber grabber,
+        com.github.hronom.scrape.dat.rooms.core.grabbers.Grabber grabber,
         String webpageUrl,
         String proxyHost,
         String proxyPort,
@@ -313,16 +312,16 @@ public class ScrapeButtonController {
         if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty() &&
             !proxyUsername.trim().isEmpty() &&
             !proxyPassword.trim().isEmpty()) {
-            return grabber.grabHtml(webpageUrl,
+            return grabber.grabContent(webpageUrl,
                 proxyHost,
                 Integer.valueOf(proxyPort),
                 proxyUsername,
                 proxyPassword
             );
         } else if (!proxyHost.trim().isEmpty() && !proxyPort.trim().isEmpty()) {
-            return grabber.grabHtml(webpageUrl, proxyHost, Integer.valueOf(proxyPort));
+            return grabber.grabContent(webpageUrl, proxyHost, Integer.valueOf(proxyPort));
         } else {
-            return grabber.grabHtml(webpageUrl);
+            return grabber.grabContent(webpageUrl);
         }
     }
 }

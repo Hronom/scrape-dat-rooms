@@ -3,15 +3,15 @@ package com.github.hronom.scrape.dat.rooms.view;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6HtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedLionHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedRoofHtmlParser;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomInfo;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomPhotoDownloader;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.NetworkUtils;
-import com.github.hronom.scrape.dat.rooms.core.html.parsers.utils.PathsUtils;
-import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
-import com.github.hronom.scrape.dat.rooms.view.controllers.BrowserEngineSelectionController;
+import com.github.hronom.scrape.dat.rooms.core.parsers.motel6.Motel6HtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.redlion.RedLionHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.redroof.RedRoofHtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.parsers.RoomInfo;
+import com.github.hronom.scrape.dat.rooms.core.parsers.RoomPhotoDownloader;
+import com.github.hronom.scrape.dat.rooms.core.utils.NetworkUtils;
+import com.github.hronom.scrape.dat.rooms.core.utils.PathsUtils;
+import com.github.hronom.scrape.dat.rooms.core.grabbers.JxBrowserGrabber;
+import com.github.hronom.scrape.dat.rooms.view.controllers.GrabberSelectionController;
 import com.github.hronom.scrape.dat.rooms.view.controllers.ScrapeButtonController;
 import com.github.hronom.scrape.dat.rooms.view.controllers.WebsiteUrlTypingController;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeMainView;
@@ -38,7 +38,7 @@ public class ScrapeDatRoomsViewApp {
         ScrapeView scrapeView = new ScrapeView();
         new ScrapeButtonController(scrapeView);
         new WebsiteUrlTypingController(scrapeView);
-        new BrowserEngineSelectionController(scrapeView);
+        new GrabberSelectionController(scrapeView);
         new ScrapeMainView(scrapeView);
 
 //        testMotel6();
@@ -110,7 +110,7 @@ public class ScrapeDatRoomsViewApp {
         }
 
         JxBrowserGrabber jxBrowserGrabber = new JxBrowserGrabber();
-        String html = jxBrowserGrabber.grabHtml(
+        String html = jxBrowserGrabber.grabContent(
             "https://www.motel6.com/en/motels.nv.las-vegas.8612.html#?propertyId=8612&numGuests=1&checkinDate=2015-11-26&numNights=1&corporatePlusNumber=CP555996&travelAgentNumber=7724054");
         Motel6HtmlParser dataProvider = new Motel6HtmlParser();
         ArrayList<RoomInfo> roomInfos = dataProvider.parse(html, new RoomPhotoDownloader() {
@@ -141,7 +141,7 @@ public class ScrapeDatRoomsViewApp {
         }
 
         JxBrowserGrabber jxBrowserGrabber = new JxBrowserGrabber();
-        String html = jxBrowserGrabber.grabHtml(
+        String html = jxBrowserGrabber.grabContent(
             "https://www.redroof.com/search/index.cfm?children=0&adults=1&SearchTerm=RRI570&checkin=11/30/15&checkout=12/31/15&rooms=1");
         RedRoofHtmlParser parser = new RedRoofHtmlParser();
         ArrayList<RoomInfo> roomInfos = parser.parse(html, new RoomPhotoDownloader() {
@@ -172,7 +172,7 @@ public class ScrapeDatRoomsViewApp {
         }
 
         JxBrowserGrabber jxBrowserGrabber = new JxBrowserGrabber();
-        String html = jxBrowserGrabber.grabHtml(
+        String html = jxBrowserGrabber.grabContent(
             "https://reservations.redlion.com/ibe/index.aspx?dt1=5367&hgID=280&hotelID=2072&langID=1&checkin=11%2F22%2F2015&checkout=11%2F23%2F2015&adults=1&children=0&destination=Settle%20Inn%20%26%20Suites%20Harlan#ws-rsftr-0");
         RedLionHtmlParser parser = new RedLionHtmlParser();
         ArrayList<RoomInfo> roomInfos = parser.parse(html, new RoomPhotoDownloader() {

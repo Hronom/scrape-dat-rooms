@@ -18,8 +18,8 @@ public class ScrapeView extends JPanel {
     private final JLabel websiteDataUrlLabel;
     private final JTextField websiteDataUrlTextField;
 
-    private final JLabel browserEngineLabel;
-    private final JComboBox<BrowserEngine> browserEngineComboBox;
+    private final JLabel grabberLabel;
+    private final JComboBox<Grabber> grabberComboBox;
 
     private final JLabel parserLabel;
     private final JComboBox<Parser> parserComboBox;
@@ -42,7 +42,7 @@ public class ScrapeView extends JPanel {
 
     private final JProgressBar progressBar;
 
-    public enum BrowserEngine {
+    public enum Grabber {
         HtmlUnit,
         Ui4j,
         JxBrowser,
@@ -100,7 +100,7 @@ public class ScrapeView extends JPanel {
         }
 
         {
-            browserEngineLabel = new JLabel("Browser engine:");
+            grabberLabel = new JLabel("Grabber:");
 
             constraint.weightx = 0;
             constraint.weighty = 0;
@@ -109,12 +109,12 @@ public class ScrapeView extends JPanel {
             constraint.gridwidth = 1;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
-            this.add(browserEngineLabel, constraint);
+            this.add(grabberLabel, constraint);
         }
 
         {
-            browserEngineComboBox = new JComboBox<>(BrowserEngine.values());
-            browserEngineComboBox.setSelectedIndex(2);
+            grabberComboBox = new JComboBox<>(Grabber.values());
+            grabberComboBox.setSelectedIndex(2);
 
             constraint.weightx = 1;
             constraint.weighty = 0;
@@ -123,11 +123,11 @@ public class ScrapeView extends JPanel {
             constraint.gridwidth = 1;
             constraint.gridheight = 1;
             constraint.fill = GridBagConstraints.BOTH;
-            this.add(browserEngineComboBox, constraint);
+            this.add(grabberComboBox, constraint);
         }
 
         {
-            parserLabel = new JLabel("Website parser:");
+            parserLabel = new JLabel("Parser:");
 
             constraint.weightx = 0;
             constraint.weighty = 0;
@@ -317,12 +317,12 @@ public class ScrapeView extends JPanel {
         websiteDataUrlTextField.getDocument().addDocumentListener(listener);
     }
 
-    public BrowserEngine getSelectedBrowserEngine() {
-        return (BrowserEngine) browserEngineComboBox.getSelectedItem();
+    public Grabber getSelectedGrabber() {
+        return (Grabber) grabberComboBox.getSelectedItem();
     }
 
-    public void addBrowserEngineItemListener(ItemListener listener) {
-        browserEngineComboBox.addItemListener(listener);
+    public void addGrabberItemListener(ItemListener listener) {
+        grabberComboBox.addItemListener(listener);
     }
 
     public void selectParser(Parser parser) {
