@@ -4,7 +4,7 @@
     <parent>
         <artifactId>scrape-dat-rooms</artifactId>
         <groupId>com.github.hronom</groupId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.hronom</groupId>
             <artifactId>scrape-dat-rooms-core</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.0</version>
         </dependency>
         <!-- Jackson -->
         <dependency>
