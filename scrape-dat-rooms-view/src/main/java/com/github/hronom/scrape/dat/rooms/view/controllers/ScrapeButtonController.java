@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.EbookersHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6HtmlParser;
+import com.github.hronom.scrape.dat.rooms.core.html.parsers.Motel6JsonParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedLionHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RedRoofHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.html.parsers.RoomInfo;
@@ -16,6 +17,7 @@ import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Grabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.HtmlUnitGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JBrowserDriverGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JauntGrabber;
+import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.OkHTTPGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.JxBrowserGrabber;
 import com.github.hronom.scrape.dat.rooms.core.webpage.html.grabbers.Ui4jGrabber;
 import com.github.hronom.scrape.dat.rooms.view.views.ScrapeView;
@@ -43,12 +45,14 @@ public class ScrapeButtonController {
     private final JxBrowserGrabber jxBrowserGrabber = new JxBrowserGrabber();
     private final JauntGrabber jauntGrabber = new JauntGrabber();
     private final JBrowserDriverGrabber jBrowserDriverGrabber = new JBrowserDriverGrabber();
+    private final OkHTTPGrabber okHTTPGrabber = new OkHTTPGrabber();
 
     private final Path resultsPath = Paths.get("results");
 
     private final Path motel6ResultsDir = resultsPath.resolve("motel6");
     private final Path motel6ResultsPhotosDir = motel6ResultsDir.resolve("photos");
     private final Motel6HtmlParser motel6HtmlParser = new Motel6HtmlParser();
+    private final Motel6JsonParser motel6JsonParser = new Motel6JsonParser();
 
     private final Path redRoofResultsDir = resultsPath.resolve("redroof");
     private final Path redRoofResultsPhotosDir = redRoofResultsDir.resolve("photos");
@@ -152,6 +156,16 @@ public class ScrapeButtonController {
                                     proxyPassword
                                 );
                                 break;
+                            case OkHTTP:
+                                html = getHtml(
+                                    okHTTPGrabber,
+                                    webpageUrl,
+                                    proxyHost,
+                                    proxyPort,
+                                    proxyUsername,
+                                    proxyPassword
+                                );
+                                break;
                             default:
                                 logger.error("Unknown browser engine: " + selectedBrowserEngine);
                                 break;
@@ -163,11 +177,21 @@ public class ScrapeButtonController {
                             ArrayList<RoomInfo> roomInfos;
                             ScrapeView.Parser selectedParser = scrapeView.getSelectedParser();
                             switch (selectedParser) {
-                                case Motel6: {
+                                case Motel6_html: {
                                     prepareFolder(motel6ResultsDir, motel6ResultsPhotosDir);
                                     RoomPhotoDownloader downloader = createRoomPhotoDownloader(
                                         motel6ResultsPhotosDir);
                                     roomInfos = motel6HtmlParser.parse(html, downloader);
+                                    if (roomInfos != null) {
+                                        save(roomInfos, motel6ResultsDir);
+                                    }
+                                    break;
+                                }
+                                case Motel6_json: {
+                                    prepareFolder(motel6ResultsDir, motel6ResultsPhotosDir);
+                                    RoomPhotoDownloader downloader = createRoomPhotoDownloader(
+                                        motel6ResultsPhotosDir);
+                                    roomInfos = motel6JsonParser.parse(html, downloader);
                                     if (roomInfos != null) {
                                         save(roomInfos, motel6ResultsDir);
                                     }

@@ -21,8 +21,10 @@ public class WebsiteUrlTypingController {
             public void insertUpdate(DocumentEvent e) {
                 try {
                     String str = e.getDocument().getText(0, e.getDocument().getLength());
-                    if (str.contains("motel6.com")) {
-                        scrapeView.selectParser(ScrapeView.Parser.Motel6);
+                    if (str.contains("svc.prd.motel6.com")) {
+                        scrapeView.selectParser(ScrapeView.Parser.Motel6_json);
+                    } else if (str.contains("motel6.com")) {
+                        scrapeView.selectParser(ScrapeView.Parser.Motel6_html);
                     } else if (str.contains("redroof.com")) {
                         scrapeView.selectParser(ScrapeView.Parser.RedRoof);
                     } else if (str.contains("redlion.com")) {

@@ -1,0 +1,73 @@
+{
+  "status": "success",
+  "data": {
+    "availability": {
+      "property_name": "Las Vegas - Tropicana",
+      "property_id": "67",
+      "show_directbill_allowed": false,
+      "show_directbill_not_allowed": false,
+      "best_available_rates": [
+        {
+          "rate_by_rooms": [
+            {
+              "room_type_code": "1B",
+              "room_description": "1 QUEEN BED |",
+              "long_description": "32\" LCD TV WITH AV CONNECTIONS FOR GAMING, WOOD-EFFECT FLOORS, BATHROOM WITH GRANITE COUNTERTOPS AND A RAISED WASH BASIN.",
+              "standard_rate_name": "Standard Rate",
+              "standard_rate_code": "RACK",
+              "average_standard_rate": 43.99,
+              "best_rate_name": "Standard Rate",
+              "best_rate_code": "RACK",
+              "average_best_rate": 43.99,
+              "rate_changed": false,
+              "currency_code": "USD",
+              "room_priority": "1",
+              "total_room_available": 64
+            },
+            {
+              "room_type_code": "2B",
+              "room_description": "2 FULL BEDS |",
+              "long_description": "32\" LCD TV WITH AV CONNECTIONS FOR GAMING, WOOD-EFFECT FLOORS, BATHROOM WITH GRANITE COUNTERTOPS AND A RAISED WASH BASIN.",
+              "standard_rate_name": "Standard Rate",
+              "standard_rate_code": "RACK",
+              "average_standard_rate": 43.99,
+              "best_rate_name": "Standard Rate",
+              "best_rate_code": "RACK",
+              "average_best_rate": 43.99,
+              "rate_changed": false,
+              "currency_code": "USD",
+              "room_priority": "2",
+              "total_room_available": 64
+            },
+            {
+              "room_type_code": "1BAR",
+              "room_description": "1 FULL BED | ADA ACCESSIBLE",
+              "long_description": "32\" LCD TV WITH AV CONNECTIONS FOR GAMING, WOOD-EFFECT FLOORS, BATHROOM WITH GRANITE COUNTERTOPS AND A RAISED WASH BASIN.",
+              "standard_rate_name": "Standard Rate",
+              "standard_rate_code": "RACK",
+              "average_standard_rate": 43.99,
+              "best_rate_name": "Standard Rate",
+              "best_rate_code": "RACK",
+              "average_best_rate": 43.99,
+              "rate_changed": false,
+              "currency_code": "USD",
+              "room_priority": "3",
+              "total_room_available": 5
+            }
+          ]
+        }
+
+      ],
+      "restricted_discount_code": [
+        {
+          "name": "AARP Member Rate",
+          "rate_code": "AARP"
+        },
+        {
+          "name": "Military Rate",
+          "rate_code": "MILITARY"
+        }
+      ]
+    }
+  }
+}

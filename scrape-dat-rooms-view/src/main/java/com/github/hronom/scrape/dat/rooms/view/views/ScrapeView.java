@@ -47,11 +47,13 @@ public class ScrapeView extends JPanel {
         Ui4j,
         JxBrowser,
         Jaunt,
-        jBrowserDriver
+        jBrowserDriver,
+        OkHTTP
     }
 
     public enum Parser {
-        Motel6,
+        Motel6_html,
+        Motel6_json,
         RedRoof,
         RedLion,
         ebookers,

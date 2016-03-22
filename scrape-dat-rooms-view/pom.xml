@@ -42,7 +42,7 @@
             <artifactId>ui4j-all</artifactId>
             <version>2.1.0</version>
         </dependency>
-        <!-- Jsoup -->
+        <!-- OkHTTP -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
