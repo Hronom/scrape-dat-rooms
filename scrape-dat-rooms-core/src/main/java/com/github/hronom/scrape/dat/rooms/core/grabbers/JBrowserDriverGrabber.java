@@ -4,12 +4,25 @@ import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.ProxyConfig;
 import com.machinepublishers.jbrowserdriver.Settings;
 import com.machinepublishers.jbrowserdriver.Timezone;
+import com.machinepublishers.jbrowserdriver.UserAgent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class JBrowserDriverGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
+    private final UserAgent userAgent;
+
+    public JBrowserDriverGrabber(){
+        userAgent = new UserAgent(
+            UserAgent.Family.WEBKIT,
+            "Google Inc.",
+            "Linux",
+            "Android 4.1.1",
+            "5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19",
+            "Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Safari/535.19"
+        );
+    }
 
     @Override
     public String grabContent(String url) {
@@ -60,6 +73,7 @@ public class JBrowserDriverGrabber implements Grabber {
                 .ignoreDialogs(false)
                 .javascript(true)
                 .proxy(proxyConfig)
+                .userAgent(userAgent)
                 .build();
 
         JBrowserDriver driver = new JBrowserDriver(settings);
