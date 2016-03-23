@@ -3,6 +3,7 @@ package com.github.hronom.scrape.dat.rooms.view.controllers;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.github.hronom.scrape.dat.rooms.core.parsers.booking.BookingHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.parsers.ebookers.EbookersHtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.parsers.motel6.Motel6HtmlParser;
 import com.github.hronom.scrape.dat.rooms.core.parsers.motel6.Motel6JsonParser;
@@ -68,6 +69,10 @@ public class ScrapeButtonController {
     private final Path windsurfercrsResultsDir = resultsPath.resolve("windsurfercrs");
     private final Path windsurfercrsResultsPhotosDir = windsurfercrsResultsDir.resolve("photos");
     private final WindsurfercrsHtmlParser windsurfercrsHtmlParser = new WindsurfercrsHtmlParser();
+
+    private final Path bookingResultsDir = resultsPath.resolve("booking");
+    private final Path bookingResultsPhotosDir = bookingResultsDir.resolve("booking");
+    private final BookingHtmlParser bookingHtmlParser = new BookingHtmlParser();
 
     public ScrapeButtonController(ScrapeView scrapeViewArg) {
         scrapeView = scrapeViewArg;
@@ -236,6 +241,19 @@ public class ScrapeButtonController {
                                     roomInfos = windsurfercrsHtmlParser.parse(html, downloader);
                                     if (roomInfos != null) {
                                         save(roomInfos, windsurfercrsResultsDir);
+                                    }
+                                    break;
+                                }
+                                case booking: {
+                                    prepareFolder(
+                                        bookingResultsDir,
+                                        bookingResultsPhotosDir
+                                    );
+                                    RoomPhotoDownloader downloader =
+                                        createRoomPhotoDownloader(bookingResultsPhotosDir);
+                                    roomInfos = bookingHtmlParser.parse(html, downloader);
+                                    if (roomInfos != null) {
+                                        save(roomInfos, bookingResultsDir);
                                     }
                                     break;
                                 }
