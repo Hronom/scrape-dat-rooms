@@ -33,6 +33,8 @@ public class WebsiteUrlTypingController {
                         scrapeView.selectParser(ScrapeView.Parser.ebookers);
                     } else if (str.contains("windsurfercrs.com")) {
                         scrapeView.selectParser(ScrapeView.Parser.windsurfercrs);
+                    } else if (str.contains("booking.com")) {
+                        scrapeView.selectParser(ScrapeView.Parser.booking);
                     }
                 } catch (BadLocationException exception) {
                     logger.error(exception);
