@@ -23,6 +23,7 @@ public class GrabberSelectionController {
     private void updateProxyAvailability() {
         if (scrapeView.getSelectedGrabber().equals(ScrapeView.Grabber.HtmlUnit) ||
             scrapeView.getSelectedGrabber().equals(ScrapeView.Grabber.Ui4j) ||
+            scrapeView.getSelectedGrabber().equals(ScrapeView.Grabber.JxBrowser) ||
             scrapeView.getSelectedGrabber().equals(ScrapeView.Grabber.jBrowserDriver) ||
             scrapeView.getSelectedGrabber().equals(ScrapeView.Grabber.OkHTTP)) {
             scrapeView.setProxyUsernameTextFieldEnabled(true);
