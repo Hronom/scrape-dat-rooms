@@ -1,10 +1,15 @@
 package com.github.hronom.scrape.dat.rooms.core.grabbers;
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.LoggerProvider;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 public class JxBrowserGrabber implements Grabber {
     private static final Logger logger = LogManager.getLogger();
@@ -13,6 +18,23 @@ public class JxBrowserGrabber implements Grabber {
 
     public JxBrowserGrabber() {
         try {
+            System.setProperty("teamdev.license.info", "true");
+            Handler log4jHandler = createHandler();
+            for (Handler handler : LoggerProvider.getBrowserLogger().getHandlers()) {
+                LoggerProvider.getBrowserLogger().removeHandler(handler);
+            }
+            LoggerProvider.getBrowserLogger().addHandler(log4jHandler);
+
+            for (Handler handler : LoggerProvider.getIPCLogger().getHandlers()) {
+                LoggerProvider.getIPCLogger().removeHandler(handler);
+            }
+            LoggerProvider.getIPCLogger().addHandler(log4jHandler);
+
+            for (Handler handler : LoggerProvider.getChromiumProcessLogger().getHandlers()) {
+                LoggerProvider.getChromiumProcessLogger().removeHandler(handler);
+            }
+            LoggerProvider.getChromiumProcessLogger().addHandler(log4jHandler);
+
             browser = new Browser();
         } catch (ExceptionInInitializerError exceptionInInitializerError) {
             logger.error(exceptionInInitializerError);
@@ -46,5 +68,33 @@ public class JxBrowserGrabber implements Grabber {
         html = StringEscapeUtils.unescapeHtml4(html);
         browser.stop();
         return html;
+    }
+
+    private Handler createHandler()
+    {
+        return new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                if (record.getLevel() == Level.INFO) {
+                    logger.info(record.getMessage());
+                } else if (record.getLevel() == Level.WARNING) {
+                    logger.warn(record.getMessage());
+                } else if (record.getLevel() == Level.SEVERE) {
+                    logger.fatal(record.getMessage());
+                } else {
+                    logger.info(record.getMessage());
+                }
+            }
+
+            @Override
+            public void flush() {
+
+            }
+
+            @Override
+            public void close() throws SecurityException {
+
+            }
+        };
     }
 }

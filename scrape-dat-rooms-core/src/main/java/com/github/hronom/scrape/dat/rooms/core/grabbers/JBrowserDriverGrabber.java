@@ -6,6 +6,7 @@ import com.machinepublishers.jbrowserdriver.Settings;
 import com.machinepublishers.jbrowserdriver.Timezone;
 import com.machinepublishers.jbrowserdriver.UserAgent;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -88,11 +89,12 @@ public class JBrowserDriverGrabber implements Grabber {
 
         // Returns the page source in its current state, including any DOM updates that occurred
         // after page load.
-        String result = driver.getPageSource();
+        String html = driver.getPageSource();
+        html = StringEscapeUtils.unescapeHtml4(html);
 
         // Close the browser. Allows this thread to terminate.
         driver.quit();
 
-        return result;
+        return html;
     }
 }

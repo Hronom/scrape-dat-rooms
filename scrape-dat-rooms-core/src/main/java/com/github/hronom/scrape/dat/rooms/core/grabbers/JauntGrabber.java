@@ -3,6 +3,7 @@ package com.github.hronom.scrape.dat.rooms.core.grabbers;
 import com.jaunt.ResponseException;
 import com.jaunt.UserAgent;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,7 +42,9 @@ public class JauntGrabber implements Grabber {
     ) {
         try {
             userAgent.visit(url);
-            return userAgent.doc.innerHTML();
+            String html = userAgent.doc.innerHTML();
+            html = StringEscapeUtils.unescapeHtml4(html);
+            return html;
         } catch (ResponseException exception) {
             logger.fatal("Fail!", exception);
             return null;
